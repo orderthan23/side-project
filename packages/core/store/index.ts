@@ -4,12 +4,10 @@ import { immer } from 'zustand/middleware/immer';
 import CustomLogger from '../console';
 
 abstract class StoreManager {
-	/**
-	 * @abstract
-	 */
-	abstract TARGET_STORE_HOOK;
 
-	static localStorageStoreBuilder(initialState, storeName) {
+	static TARGET_STORE_HOOK = new Error('must override');
+
+	static localStorageStoreBuilder(initialState: any, storeName: any) {
 		return create(
 			CustomLogger.storeWatcher(
 				persist(
@@ -26,7 +24,7 @@ abstract class StoreManager {
 		);
 	}
 
-	static sessionStorageStoreBuilder(initialState, storeName) {
+	static sessionStorageStoreBuilder(initialState: any, storeName: any) {
 		return create(
 			CustomLogger.storeWatcher(
 				persist(
@@ -44,7 +42,7 @@ abstract class StoreManager {
 		);
 	}
 
-	static storeBuilder(initialState, storeName) {
+	static storeBuilder(initialState: any, storeName: any) {
 		return create(
 			CustomLogger.storeWatcher(
 				devtools(
@@ -62,7 +60,8 @@ abstract class StoreManager {
 	 * @param {string} actionType 발생할 액션의 이름
 	 * @returns {*}
 	 */
-	static setState(stateChanger, actionType) {
+	static setState(stateChanger: any, actionType: any) {
+		// @ts-ignore
 		return this.TARGET_STORE_HOOK.setState(stateChanger, false, actionType);
 	}
 
@@ -71,7 +70,8 @@ abstract class StoreManager {
 	 * @param something
 	 * @returns {*}
 	 */
-	static getState(...something) {
+	static getState(...something: any[]) {
+		// @ts-ignore
 		return this.TARGET_STORE_HOOK?.getState(...something);
 	}
 }

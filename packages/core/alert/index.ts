@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
  * @author 고종현
  * @version 1.0
  */
-export default class CustomAlert {
+export class CustomAlert {
 	static success(resource = '', callBack = () => null, confirmButtonText = '확인') {
 		Swal.fire({
 			icon: 'success',
@@ -110,3 +110,6 @@ export default class CustomAlert {
 		});
 	}
 }
+
+
+export default CustomAlert;

@@ -1,25 +1,25 @@
 import { isEqual, reduce } from 'lodash';
 
 export default class CustomLogger {
-	static info(...param) {
+	static info(...param: string[]) {
 		if (JSON.parse(process.env.NEXT_PUBLIC_USE_LOGGER)) {
 			console.log(...param);
 		}
 	}
 
-	static error(...param) {
+	static error(...param: any[]) {
 		if (JSON.parse(process.env.NEXT_PUBLIC_USE_LOGGER)) {
 			console.error(...param);
 		}
 	}
 
-	static warning(...param) {
+	static warning(...param: any[]) {
 		if (JSON.parse(process.env.NEXT_PUBLIC_USE_LOGGER)) {
 			console.warn(...param);
 		}
 	}
 
-	static groupCollapsed(...param) {
+	static groupCollapsed(...param: string[]) {
 		if (JSON.parse(process.env.NEXT_PUBLIC_USE_LOGGER)) {
 			console.groupCollapsed(...param);
 		}
@@ -31,9 +31,9 @@ export default class CustomLogger {
 		}
 	}
 
-	static storeWatcher = (config, storeName) => (set, get, api) => {
+	static storeWatcher = (config, storeName: string) => (set: (arg0: any) => void, get: () => any, api: any) => {
 		return config(
-			(args) => {
+			(args: any) => {
 				const beforeState = get();
 				set(args);
 				const currentState = get();
@@ -41,7 +41,7 @@ export default class CustomLogger {
 				if (JSON.parse(process.env.NEXT_PUBLIC_USE_LOGGER)) {
 					const changer = reduce(
 						beforeState,
-						function (result, value, key) {
+						function (result: any[], value: any, key: string | number) {
 							const prevValue = currentState ? currentState[key] : undefined;
 							return isEqual(value, prevValue)
 								? result
@@ -68,7 +68,7 @@ export default class CustomLogger {
 		);
 	};
 
-	static httpWatcher(response) {
+	static httpWatcher(response: { config: any; status: any; data: any; }) {
 		const { config, status, data } = response;
 		this.groupCollapsed('%cHTTP Call Results : ', 'color: olive; font-size : 14px;  font-weight : bold;', config?.url);
 		this.info('%cSTATUS : ', 'color : green', status);
