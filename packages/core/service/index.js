@@ -1,12 +1,9 @@
-import CustomLogger from '@core/console';
-import CustomError from '@core/error';
-import ThemeStoreAction from '@store/option/optionAction';
-import FLAGS from '@config/flags';
+import CustomLogger from '../console';
+import CustomError from '../error';
 import axios from 'axios';
 import { forOwn } from 'lodash';
 import axiosRetry from 'axios-retry';
-import { FileUploadAxios, GeneralAxios } from '@service/config/axios';
-import { HTTP } from '@core/constant';
+import { HTTP } from '../constant';
 
 export class HttpManager {
 	static REQUEST = 'request';
@@ -47,7 +44,7 @@ export class HttpManager {
 		} catch (error) {
 			CustomError.handler(error);
 		} finally {
-			ThemeStoreAction.hideLoading();
+			// ThemeStoreAction.hideLoading();
 			CustomLogger.httpWatcher(response);
 		}
 		return response?.data?.result;
@@ -70,13 +67,13 @@ export class HttpManager {
 			throw new CustomError(resMsg, false);
 		}
 
-		if (result && result?.actFlag === FLAGS.ACT_FLAG.ERROR) {
-			throw new CustomError(result.resMsg);
-		}
-
-		if (result && result?.actFlag === FLAGS.ACT_FLAG.WARNING) {
-			CustomLogger.error(result?.resMsg);
-		}
+		// if (result && result?.actFlag === FLAGS.ACT_FLAG.ERROR) {
+		// 	throw new CustomError(result.resMsg);
+		// }
+		//
+		// if (result && result?.actFlag === FLAGS.ACT_FLAG.WARNING) {
+		// 	CustomLogger.error(result?.resMsg);
+		// }
 	}
 
 	//인터셉터 바인드
@@ -99,9 +96,9 @@ export class HttpManager {
 	 * @returns {*}
 	 * @constructor
 	 */
-	static send = ({ customAxios = GeneralAxios, method = HTTP.METHOD.GET, url, data = {}, useCache = false }) => {
+	static send = ({ customAxios, method = HTTP.METHOD.GET, url, data = {}, useCache = false }) => {
 		const config = { url, method };
-		ThemeStoreAction.showLoading();
+		//ThemeStoreAction.showLoading();
 
 		if (method === HTTP.METHOD.GET) {
 			config.params = data;
@@ -121,8 +118,8 @@ export class HttpManager {
 	 * @param data
 	 * @returns {*}
 	 */
-	static sendFile({ customAxios = FileUploadAxios, url, data = {} }) {
-		ThemeStoreAction.showLoading();
+	static sendFile({ customAxios, url, data = {} }) {
+		// ThemeStoreAction.showLoading();
 		const config = { url, method: HTTP.METHOD.POST };
 
 		const formData = new FormData();

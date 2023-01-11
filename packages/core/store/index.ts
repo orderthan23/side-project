@@ -1,13 +1,13 @@
 import create from 'zustand';
-import CustomLogger from '@core/console';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import CustomLogger from '../console';
 
-class StoreManager {
+abstract class StoreManager {
 	/**
 	 * @abstract
 	 */
-	static TARGET_STORE_HOOK = new Error('TARGET_STORE_HOOK MUST BE OVERRIDE');
+	abstract TARGET_STORE_HOOK;
 
 	static localStorageStoreBuilder(initialState, storeName) {
 		return create(
